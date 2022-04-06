@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
-
+import Firebase
 @main
 struct FishingSouthAfricaApp: App {
+    var authentication = Authentication()
+    init() {
+        FirebaseApp.configure()
+      
+     }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(authentication)
         }
     }
 }
