@@ -22,6 +22,19 @@ struct AddFishView: View {
     @State private var image: UIImage?
 
     var body: some View {
+        switch viewModel.state {
+        case .idle:
+            ProgressView()
+        case .loading:
+            ProgressView()
+        case .failed(let error):
+            ErrorView(error: error)
+        case .loaded:
+            loadedView
+        }
+    }
+
+    private var loadedView: some View {
         NavigationView {
             Form {
                 Section(header: Text("Info")) {
@@ -53,12 +66,6 @@ struct AddFishView: View {
                         Text("Kept").tag(ReleaseStatus.Kept)
                     }.pickerStyle(.segmented)
                     DatePicker("Date Caught", selection: $viewModel.timeCaught, displayedComponents: .hourAndMinute)
-//                    Toggle(isOn: $showingFightDuration) {
-//                        Text("Add Fight Duration")
-//                    }
-//                    if showingFightDuration {
-//                        TimeDurationPicker(duration: $viewModel.fightDuration).pickerStyle(.inline)
-//                    }
                 }
 
                 Section(header: Text("Picture")) {
@@ -78,19 +85,35 @@ struct AddFishView: View {
                         Image(uiImage: image)
                     }
                 }
-                Section {
-                    Button {
-                        self.viewModel.addFishCaught()
-                        self.presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Text("Save").foregroundColor(.red)
-                    }
-                }
-            }.navigationTitle("Add Fish Caught").sheet(isPresented: $shouldPresentImagePicker) {
+
+            }.navigationTitle("Add Fish").sheet(isPresented: $shouldPresentImagePicker) {
                 ImagePickerView(sourceType: self.shouldPresentCamera ? .camera : .photoLibrary, image: self.$viewModel.image, isPresented: self.$shouldPresentImagePicker)
             }.actionSheet(isPresented: $shouldPresentActionScheet) { () -> ActionSheet in
                 CameraLibraryActionSheet()
+            }.navigationBarItems(leading: cancelButton, trailing: saveButton)
+        }
+    }
+
+    private var saveButton: some View {
+        Button {
+            self.viewModel.addFish { result in
+                switch result {
+                case .success:
+                    self.presentationMode.wrappedValue.dismiss()
+                case .failure(let error):
+                    print(error)
+                }
             }
+        } label: {
+            Text("Save")
+        }
+    }
+
+    private var cancelButton: some View {
+        Button {
+            self.presentationMode.wrappedValue.dismiss()
+        } label: {
+            Text("Cancel").foregroundColor(.red)
         }
     }
 

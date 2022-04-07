@@ -46,7 +46,7 @@ struct UserService
     ///   - trip: Trip
     ///   - completion: Optional Completion Handler
     public func addTripToUser(trip: Trip, completion: @escaping
-        () -> Void = {})
+                              (Result<Trip, Error>) -> Void = { _ in })
     {
         let currentUserUID = Auth.auth().currentUser?.uid ?? "UserService:addTripToUser"
 
@@ -54,8 +54,12 @@ struct UserService
         userRef.updateData([
             "trips": FieldValue.arrayUnion(["\(trip.UUID)"]),
             "updatedAt": Date()
-        ])
-        completion()
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            }
+            completion(.success(trip))
+        }
     }
 
     /// Initializes User into the User collection in the databse

@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct Fish: Codable {
+public struct Fish: Codable {
     var id: UUID
     var owner: String
     var trip: String

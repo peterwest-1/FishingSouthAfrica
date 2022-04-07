@@ -18,10 +18,11 @@ final class FishDetailViewModel: ObservableObject {
     @Published var image: UIImage?
     let service = FishService.shared
     
+    @Published private(set) var state: LoadingState<Fish> = LoadingState.idle
     
     init(fish: Fish){
+        self.state = .loaded(fish)
         self.fish = fish
-        
         
     }
 }

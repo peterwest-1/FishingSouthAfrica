@@ -8,7 +8,10 @@
 import SwiftUI
 
 protocol EditFishViewModelProtocol {
-    func editFish()
+    func editFish(completion: @escaping
+        (Result<Fish, Error>) -> Void)
+    func deleteFish(completion: @escaping
+        (Result<Fish, Error>) -> Void )
 }
 
 final class EditFishViewModel: ObservableObject {
@@ -23,8 +26,9 @@ final class EditFishViewModel: ObservableObject {
     var fish: Fish
 
     let service = FishService.shared
-
+    @Published private(set) var state: LoadingState<Fish> = LoadingState.idle
     init(fish: Fish) {
+        state = .loaded(fish)
         self.fish = fish
         species = fish.species ?? "ErrorWriting:Species"
         weight = fish.weight ?? -1
@@ -36,7 +40,10 @@ final class EditFishViewModel: ObservableObject {
 }
 
 extension EditFishViewModel: EditFishViewModelProtocol {
-    func editFish() {
+    func editFish(completion: @escaping
+        (Result<Fish, Error>) -> Void = { _ in })
+    {
+        self.state = .loading
         let updated = Fish(id: fish.id,
                            owner: fish.owner,
                            trip: fish.trip,
@@ -52,6 +59,29 @@ extension EditFishViewModel: EditFishViewModelProtocol {
                            image: fish.image,
                            createdAt: fish.createdAt,
                            updatedAt: Date())
-        FishService.shared.editFish(fish: updated)
+        FishService.shared.editFish(fish: updated) { result in
+            switch result {
+                case .success:
+                    self.state = .loaded(self.fish)
+                    completion(.success(self.fish))
+                case .failure(let error):
+                    self.state = .failed(error)
+                    completion(.failure(error))
+            }
+        }
+    }
+
+    func deleteFish(completion: @escaping
+        (Result<Fish, Error>) -> Void = { _ in })
+    {
+        self.state = .loading
+        FishService.shared.deleteFish(fish: fish) { result in
+            switch result {
+                case .success(let fish):
+                    self.state = .loaded(fish)
+                case .failure(let error):
+                    self.state = .failed(error)
+            }
+        }
     }
 }

@@ -19,7 +19,9 @@ enum ImageStoragePath: String {
 public class StorageManager: ObservableObject {
     let storage = Storage.storage()
 
-    func persistFishImageToStorage(image: UIImage, fish: Fish, completion: @escaping (Result<URL, Error>) -> Void = { _ in }) {
+    static let shared = StorageManager()
+    
+    public func persistFishImageToStorage(image: UIImage, fish: Fish, completion: @escaping (Result<URL, Error>) -> Void = { _ in }) {
         let ref = storage.reference(withPath: fish.UUID)
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
         ref.putData(imageData, metadata: nil) { _, err in
@@ -41,6 +43,19 @@ public class StorageManager: ObservableObject {
                             completion(.failure(error))
                     }
                 }
+            }
+        }
+    }
+
+    public func removeFishImageFromStorage(fish: Fish, completion: @escaping (Result<Bool, Error>) -> Void = { _ in }) {
+        let ref = storage.reference(withPath: fish.UUID)
+
+        // Delete the file
+        ref.delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
             }
         }
     }

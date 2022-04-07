@@ -16,6 +16,20 @@ struct AddTripView: View {
     @StateObject var locationManager = LocationManager()
 
     var body: some View {
+        switch viewModel.state {
+        case .idle:
+            Color.clear.onAppear {}
+        case .loading:
+            ProgressView()
+        case .failed(let error):
+            ErrorView(error: error)
+
+        case .loaded:
+            loadedView
+        }
+    }
+
+    private var loadedView: some View {
         NavigationView {
             Form {
                 Section {
@@ -28,13 +42,30 @@ struct AddTripView: View {
                     DatePicker("Ending Time", selection: $viewModel.dateFinish)
                 }
 
-                Section(header: Text("Save")) {
-                    Button("Save") {
-                        viewModel.addTrip()
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
+            }.navigationTitle("Fishing Trip").navigationBarItems(leading: cancelButton, trailing: saveButton)
+        }
+    }
+
+    private var saveButton: some View {
+        Button {
+            self.viewModel.addTrip() { result in
+                switch result {
+                case .success:
+                    self.presentationMode.wrappedValue.dismiss()
+                case .failure(let error):
+                    print(error)
                 }
-            }.navigationTitle("Fishing Trip")
+            }
+        } label: {
+            Text("Save")
+        }
+    }
+
+    private var cancelButton: some View {
+        Button {
+            self.presentationMode.wrappedValue.dismiss()
+        } label: {
+            Text("Cancel").foregroundColor(.red)
         }
     }
 }

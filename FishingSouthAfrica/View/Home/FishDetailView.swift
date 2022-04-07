@@ -13,6 +13,21 @@ struct FishDetailView: View {
     @State private var isShowingEdit = false
 
     var body: some View {
+        switch viewModel.state {
+            case .idle:
+                Color.clear.onAppear {
+                    //Do smeotinh
+                }
+            case .loading:
+                ProgressView()
+            case .failed(let error):
+                ErrorView(error: error)
+            case .loaded(_):
+                loadedView
+        }
+    }
+    
+    private var loadedView: some View {
         Group {
             VStack {
                 if let image = viewModel.fish.image {
@@ -25,9 +40,7 @@ struct FishDetailView: View {
 
                 
             }
-        }.sheet(isPresented: $isShowingEdit, onDismiss: {
-            print("OnEditDismiss")
-        }) {
+        }.sheet(isPresented: $isShowingEdit, onDismiss: nil) {
             EditFishView(viewModel: EditFishViewModel(fish: viewModel.fish))
         }.navigationBarTitle(Text(viewModel.fish.species ?? "Fishname")).navigationBarItems(trailing: editButton)
     }

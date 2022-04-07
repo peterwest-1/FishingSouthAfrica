@@ -23,18 +23,38 @@ struct TripService
     ///   - trip: Trip
     ///   - completion: Completion Handler
     private func addTripToCollection(trip: Trip, completion: @escaping
-        () -> Void = {})
+        (Result<Trip, Error>) -> Void = { _ in })
     {
         var tripReference: DocumentReference?
         tripReference = db.collection(Collections.TRIPS_COLLECTION).document(trip.UUID)
-        try? tripReference?.setData(from: trip)
+        try? tripReference?.setData(from: trip, completion: { error in
+            if let error = error
+            {
+                completion(.failure(error))
+            }
+            completion(.success(trip))
+        })
     }
 
     public func addTrip(trip: Trip, completion: @escaping
-        () -> Void = {})
+        (Result<Trip, Error>) -> Void = { _ in })
     {
-        addTripToCollection(trip: trip)
-        UserService.shared.addTripToUser(trip: trip)
+        addTripToCollection(trip: trip) { result in
+            switch result {
+                case .success(let trip):
+                    UserService.shared.addTripToUser(trip: trip) { result in
+                        switch result {
+                            case .success(let trip):
+                                completion(.success(trip))
+                            case .failure(let error):
+                                completion(.failure(error))
+                        }
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+        
     }
 
     public func editTrip(trip: Trip, completion: @escaping

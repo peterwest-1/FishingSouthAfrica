@@ -15,6 +15,7 @@ import SwiftUI
 enum FishError: Error {
     case Edit
     case Image
+    case Delete
 }
 
 struct FishService {
@@ -84,7 +85,7 @@ struct FishService {
     }
 
     public func editFish(fish: Fish, completion: @escaping
-        (Result<Bool, Error>) -> Void = { _ in })
+        (Result<Fish, Error>) -> Void = { _ in })
     {
         var json: [String: Any]?
 
@@ -106,7 +107,7 @@ struct FishService {
                     print("Error Editing 1")
                     completion(.failure(error))
                 } else {
-                    completion(.success(true))
+                    completion(.success(fish))
                 }
             })
         } else {
@@ -115,6 +116,8 @@ struct FishService {
         }
     }
 
+    
+    
     /// Delete fish from database
     ///     1. Delete fish from colection
     ///     2. Remove from Trip
@@ -124,14 +127,49 @@ struct FishService {
     ///   - fish: Fish
     ///   - trip: Trip
     ///   - completion: Optional Completion Handler
-    public func deleteFish(fish: Fish, trip: Trip, completion: @escaping
-        () -> Void = {})
+    public func deleteFish(fish: Fish, completion: @escaping
+        (Result<Fish, Error>) -> Void = { _ in })
     {
         deleteFishFromCollection(fish: fish) {
-            TripService.shared.deleteFishFromTrip(fish: fish, trip: trip) {
-                UserService.shared.deleteFishFromUser(fish: fish) {
-                    // TODO: - Remove image of fish from storage
-                    completion()
+            getTripFromFish(fish: fish) { result in
+                switch result {
+                    case .success(let trip):
+                        TripService.shared.deleteFishFromTrip(fish: fish, trip: trip) {
+                            UserService.shared.deleteFishFromUser(fish: fish) {
+                                StorageManager.shared.removeFishImageFromStorage(fish: fish) { result in
+                                    switch result {
+                                        case .success:
+                                            completion(.success(fish))
+                                        case .failure(let error):
+                                            completion(.failure(error))
+                                    }
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    private func getTripFromFish(fish: Fish, completion: @escaping
+        (Result<Trip, Error>) -> Void = { _ in })
+    {
+        db.collection(Collections.TRIPS_COLLECTION).whereField("fish", arrayContains: fish.UUID).getDocuments { querySnapshot, err in
+            if let err = err {
+                completion(.failure(err))
+            } else {
+                for document in querySnapshot!.documents {
+                    var x: Trip?
+                    do {
+                        x = try document.data(as: Trip.self)
+                    } catch {
+                        print(error)
+                    }
+                    if let trip = x {
+                        completion(.success(trip))
+                    }
                 }
             }
         }

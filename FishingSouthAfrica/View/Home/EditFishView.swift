@@ -22,6 +22,29 @@ struct EditFishView: View {
     @State private var image: UIImage?
 
     var body: some View {
+        switch viewModel.state {
+            case .idle:
+                EmptyView()
+            case .loading:
+                ProgressView()
+            case .failed(let error):
+                ErrorView(error: error)
+            case .loaded(_):
+                idleView
+        }
+    }
+
+    private func CameraLibraryActionSheet() -> ActionSheet {
+        return ActionSheet(title: Text("Choose Mode"), message: Text("Please choose your preferred mode to set fish"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
+            self.shouldPresentImagePicker = true
+            self.shouldPresentCamera = true
+        }), ActionSheet.Button.default(Text("Photo Library"), action: {
+            self.shouldPresentImagePicker = true
+            self.shouldPresentCamera = false
+        }), ActionSheet.Button.cancel()])
+    }
+    
+    private var idleView: some View {
         NavigationView {
             Form {
                 Section(header: Text("Info")) {
@@ -40,7 +63,7 @@ struct EditFishView: View {
 
                 Section(header: Text("Location")) {
                     NavigationLink {
-//                    FishCaughtMap()
+                        //                    FishCaughtMap()
                     } label: {
                         Text("Add Location")
                     }
@@ -56,9 +79,9 @@ struct EditFishView: View {
                     Toggle(isOn: $showingFightDuration) {
                         Text("Add Fight Duration")
                     }
-//                if showingFightDuration {
-//                    TimeDurationPicker(duration: $viewModel.fightDuration).pickerStyle(.inline)
-//                }
+                    //                if showingFightDuration {
+                    //                    TimeDurationPicker(duration: $viewModel.fightDuration).pickerStyle(.inline)
+                    //                }
                 }
 
                 Section(header: Text("Picture")) {
@@ -78,7 +101,9 @@ struct EditFishView: View {
                         Image(uiImage: image)
                     }
                 }
-                Section {}
+                Section {
+                    deleteButton
+                }
             }.navigationTitle(viewModel.fish.species ?? "Name")
                 .sheet(isPresented: $shouldPresentImagePicker) {
                     ImagePickerView(sourceType: self.shouldPresentCamera ? .camera : .photoLibrary, image: self.$viewModel.image, isPresented: self.$shouldPresentImagePicker)
@@ -89,20 +114,18 @@ struct EditFishView: View {
         }
     }
 
-    private func CameraLibraryActionSheet() -> ActionSheet {
-        return ActionSheet(title: Text("Choose Mode"), message: Text("Please choose your preferred mode to set fish"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
-            self.shouldPresentImagePicker = true
-            self.shouldPresentCamera = true
-        }), ActionSheet.Button.default(Text("Photo Library"), action: {
-            self.shouldPresentImagePicker = true
-            self.shouldPresentCamera = false
-        }), ActionSheet.Button.cancel()])
-    }
-
     private var saveButton: some View {
         Button {
-            self.viewModel.editFish()
-            self.presentationMode.wrappedValue.dismiss()
+            self.viewModel.editFish { result in
+                switch result {
+                    
+                    case .success:
+                        print("Dismisssssss")
+                        self.presentationMode.wrappedValue.dismiss()
+                    case .failure(let error):
+                        print(error)
+                }
+            }
         } label: {
             Text("Save")
         }
@@ -113,6 +136,22 @@ struct EditFishView: View {
             self.presentationMode.wrappedValue.dismiss()
         } label: {
             Text("Cancel").foregroundColor(.red)
+        }
+    }
+
+    private var deleteButton: some View {
+        Button {
+            viewModel.deleteFish { result in
+                switch result {
+                    case .success:
+                        self.presentationMode.wrappedValue.dismiss()
+                    case .failure(let error):
+                        print(error)
+                }
+            }
+
+        } label: {
+            Text("Delete Fish").foregroundColor(.red)
         }
     }
 }

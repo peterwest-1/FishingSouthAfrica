@@ -9,7 +9,8 @@ import FirebaseAuth
 import SwiftUI
 
 protocol AddFishViewModelProtocol {
-    func addFishCaught()
+    func addFish(completion: @escaping
+        (Result<Fish, Error>) -> Void)
 }
 
 final class AddFishViewModel: ObservableObject {
@@ -23,8 +24,11 @@ final class AddFishViewModel: ObservableObject {
 
     var trip: Trip
 
+    @Published private(set) var state: LoadingState<Bool> = LoadingState.idle
+
     init(trip: Trip) {
         self.trip = trip
+        self.state = .loaded(true)
         self.weight = Measurement<UnitMass>(value: 0.0, unit: .kilograms)
         self.length = Measurement<UnitLength>(value: 0.0, unit: .centimeters)
         self.fightDuration = Measurement<UnitDuration>(value: 0.0, unit: .minutes)
@@ -32,17 +36,10 @@ final class AddFishViewModel: ObservableObject {
 }
 
 extension AddFishViewModel: AddFishViewModelProtocol {
-//    private func addFish(fish: Fish) {
-//        service.addFishCaught(fish: fish) {
-//            self.service.addFishCaughtToTrip(trip: self.trip, fish: fish) {
-//                self.service.addFishCaughtToUser(fish: fish) {
-//                    print("Success")
-//                }
-//            }
-//        }
-//    }
-
-    func addFishCaught() {
+    func addFish(completion: @escaping
+        (Result<Fish, Error>) -> Void = { _ in })
+    {
+        state = .loading
         let currentUserUID = Auth.auth().currentUser?.uid ?? "-5"
 
         var fish = Fish(id: UUID(),
@@ -67,10 +64,12 @@ extension AddFishViewModel: AddFishViewModelProtocol {
                     if let img = self.image {
                         FishService.shared.uploadFishImage(image: img, fish: fish) { url in
                             fish.image = url
+                            self.state = .loaded(true)
+                            completion(.success(fish))
                         }
                     }
                 case .failure(let error):
-                    print(error)
+                    completion(.failure(error))
             }
         })
     }

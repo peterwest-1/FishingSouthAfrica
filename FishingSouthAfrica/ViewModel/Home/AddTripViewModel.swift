@@ -9,7 +9,8 @@ import FirebaseAuth
 import SwiftUI
 
 protocol AddTripViewModelProtocol {
-    func addTrip()
+    func addTrip(completion: @escaping
+        (Result<Fish, Error>) -> Void)
 }
 
 final class AddTripViewModel: ObservableObject {
@@ -17,10 +18,19 @@ final class AddTripViewModel: ObservableObject {
     @Published var locationName = ""
     @Published var dateStart = Date()
     @Published var dateFinish = Date()
+
+    @Published private(set) var state: LoadingState<Bool> = LoadingState.idle
+
+    init() {
+        self.state = .loaded(true)
+    }
 }
 
 extension AddTripViewModel: AddTripViewModelProtocol {
-    func addTrip() {
+    func addTrip(completion: @escaping
+        (Result<Fish, Error>) -> Void = { _ in })
+    {
+        state = .loading
         let trip = Trip(id: UUID(),
                         owner: Auth.auth().currentUser?.uid ?? "CreateFishingTripViewModel:addFishingTrip",
                         name: name,
@@ -35,6 +45,13 @@ extension AddTripViewModel: AddTripViewModelProtocol {
                         createdAt: Date(),
                         updatedAt: Date())
 
-        TripService.shared.addTrip(trip: trip)
+        TripService.shared.addTrip(trip: trip) { result in
+            switch result {
+                case .success(_):
+                    self.state = .loaded(true)
+                case .failure(let error):
+                    self.state = .failed(error)
+            }
+        }
     }
 }
