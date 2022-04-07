@@ -26,7 +26,7 @@ struct Trip: Codable {
     var fish: [String]?
     
     //TODO: - Fix to actually use Image data and not Image View
-    var images: [Data]?
+    var images: [String]?
     
     var createdAt: Date?
     var updatedAt: Date?

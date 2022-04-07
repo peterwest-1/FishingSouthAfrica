@@ -7,6 +7,7 @@
 //  Copyright © 2020 PV West. All rights reserved.
 //
 // https://medium.com/better-programming/how-to-pick-an-image-from-camera-or-photo-library-in-swiftui-a596a0a2ece
+import Photos
 import SwiftUI
 import UIKit
 import VisionKit
@@ -37,6 +38,11 @@ struct ImagePickerView: UIViewControllerRepresentable {
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            
+//            guard let asset = info[.phAsset] as? PHAsset else { return }
+//            print("Latitude",asset.location?.coordinate.latitude)
+//            print("Latitude",asset.location?.coordinate.longitude)
+
             if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
                 parent.image = image
             }

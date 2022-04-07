@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct Fish: Codable {
     var id: UUID
@@ -26,7 +28,6 @@ struct Fish: Codable {
     
     var notes: String?
     
-    // TODO: - Fix to actually use Image data and not Image View
     var image: String?
     
     var createdAt: Date?

@@ -61,14 +61,17 @@ extension AddFishViewModel: AddFishViewModelProtocol {
                         createdAt: Date(),
                         updatedAt: Date())
 
-        if let img = image {
-
-            FishService.shared.uploadFishImage(image: img) { url in
-                fish.image = url
-                FishService.shared.addFish(fish: fish, trip: self.trip)
+        FishService.shared.addFish(fish: fish, trip: trip, completion: { result in
+            switch result {
+                case .success:
+                    if let img = self.image {
+                        FishService.shared.uploadFishImage(image: img, fish: fish) { url in
+                            fish.image = url
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
             }
-        } else {
-            FishService.shared.addFish(fish: fish, trip: trip)
-        }
+        })
     }
 }

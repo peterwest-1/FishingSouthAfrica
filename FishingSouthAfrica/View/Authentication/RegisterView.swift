@@ -42,9 +42,10 @@ struct SignUpView: View {
                         .fontWeight(.heavy)
                 }
                 .padding(.top)
+            
                 
                 VStack {
-                    CustomTextField(placeholder: "Email", text: $authentication.emailRegister).keyboardType(.emailAddress)
+                    CustomTextField(placeholder: "Email", text: $authentication.emailRegister).keyboardType(.emailAddress).autocapitalization(.none)
                     CustomTextField(placeholder: "Password", text: $authentication.passwordRegister, isSecure: true)
                     CustomTextField(placeholder: "Confirm", text: $authentication.confirmPasswordRegister, isSecure: true)
                 }

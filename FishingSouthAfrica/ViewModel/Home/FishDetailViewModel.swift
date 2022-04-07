@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 protocol FishDetailViewModelProtocol {
-    func getImage()
+    
 }
 
 final class FishDetailViewModel: ObservableObject {
@@ -21,18 +21,13 @@ final class FishDetailViewModel: ObservableObject {
     
     init(fish: Fish){
         self.fish = fish
-        getImage()
+        
         
     }
 }
 
 extension FishDetailViewModel: FishDetailViewModelProtocol {
-    func getImage(){
-       
-        service.getImage(fish: self.fish) { image in
-            self.image = image ?? UIImage(named: "profile")
-        }
-    }
+
     
 
 }

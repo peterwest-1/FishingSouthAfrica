@@ -14,6 +14,8 @@
 		B410629E27FC6A7300AA2767 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B410629D27FC6A7300AA2767 /* CustomTextField.swift */; };
 		B42FC97127F58569000D9693 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42FC97027F58569000D9693 /* LoginView.swift */; };
 		B42FC97327F58572000D9693 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42FC97227F58572000D9693 /* RegisterView.swift */; };
+		B487880727FECE3C00D9F79D /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = B487880627FECE3C00D9F79D /* SDWebImageSwiftUI */; };
+		B487880B27FEE00400D9F79D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B487880A27FEE00400D9F79D /* ProfileView.swift */; };
 		B499A41627F9C92D00CD14B4 /* Fish.swift in Sources */ = {isa = PBXBuildFile; fileRef = B499A41527F9C92D00CD14B4 /* Fish.swift */; };
 		B499A41827F9CABC00CD14B4 /* AddFishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B499A41727F9CABC00CD14B4 /* AddFishView.swift */; };
 		B499A41D27F9D5F800CD14B4 /* AddFishViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B499A41C27F9D5F800CD14B4 /* AddFishViewModel.swift */; };
@@ -43,12 +45,10 @@
 		B4CC93E727FAD60F00FD809C /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CC93E627FAD60F00FD809C /* DateFormatters.swift */; };
 		B4CC93E927FB125500FD809C /* NumberFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CC93E827FB125500FD809C /* NumberFormatters.swift */; };
 		B4CC93EB27FB13B400FD809C /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CC93EA27FB13B400FD809C /* ProfileViewModel.swift */; };
-		B4CC93ED27FB14FA00FD809C /* RemoteImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CC93EC27FB14FA00FD809C /* RemoteImageModel.swift */; };
 		B4CC93F027FB1D5800FD809C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = B4CC93EF27FB1D5800FD809C /* FirebaseStorage */; };
 		B4CC93F227FB1D5800FD809C /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = B4CC93F127FB1D5800FD809C /* FirebaseStorageCombine-Community */; };
 		B4CC93F427FB1D5800FD809C /* FirebaseStorageSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = B4CC93F327FB1D5800FD809C /* FirebaseStorageSwift-Beta */; };
 		B4CC93F627FB2A4E00FD809C /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CC93F527FB2A4E00FD809C /* StorageManager.swift */; };
-		B4D3819827F49C5700A6075D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D3819727F49C5700A6075D /* ProfileView.swift */; };
 		B4D3819A27F49C7400A6075D /* RegulationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D3819927F49C7400A6075D /* RegulationsView.swift */; };
 		B4DF87EF27FA21FE001E5555 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DF87EE27FA21FE001E5555 /* HomeViewModel.swift */; };
 		B4DF87F127FA2D3C001E5555 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DF87F027FA2D3C001E5555 /* LoadingState.swift */; };
@@ -77,6 +77,7 @@
 		B410629D27FC6A7300AA2767 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		B42FC97027F58569000D9693 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B42FC97227F58572000D9693 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		B487880A27FEE00400D9F79D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B499A41527F9C92D00CD14B4 /* Fish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fish.swift; sourceTree = "<group>"; };
 		B499A41727F9CABC00CD14B4 /* AddFishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFishView.swift; sourceTree = "<group>"; };
 		B499A41C27F9D5F800CD14B4 /* AddFishViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFishViewModel.swift; sourceTree = "<group>"; };
@@ -105,9 +106,7 @@
 		B4CC93E627FAD60F00FD809C /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
 		B4CC93E827FB125500FD809C /* NumberFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatters.swift; sourceTree = "<group>"; };
 		B4CC93EA27FB13B400FD809C /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
-		B4CC93EC27FB14FA00FD809C /* RemoteImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageModel.swift; sourceTree = "<group>"; };
 		B4CC93F527FB2A4E00FD809C /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		B4D3819727F49C5700A6075D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B4D3819927F49C7400A6075D /* RegulationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegulationsView.swift; sourceTree = "<group>"; };
 		B4DF87EE27FA21FE001E5555 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4DF87F027FA2D3C001E5555 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -134,6 +133,7 @@
 				B499A43D27F9E9AF00CD14B4 /* FirebaseFirestoreSwift-Beta in Frameworks */,
 				B4F9C31927F46B0600D0C23D /* FirebaseFirestore in Frameworks */,
 				B4CC93F027FB1D5800FD809C /* FirebaseStorage in Frameworks */,
+				B487880727FECE3C00D9F79D /* SDWebImageSwiftUI in Frameworks */,
 				B4CC93F227FB1D5800FD809C /* FirebaseStorageCombine-Community in Frameworks */,
 				B4CC93F427FB1D5800FD809C /* FirebaseStorageSwift-Beta in Frameworks */,
 				B4F9C31B27F46B0600D0C23D /* FirebaseStorage in Frameworks */,
@@ -171,9 +171,9 @@
 		B410629927FC672700AA2767 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				B4D3819727F49C5700A6075D /* ProfileView.swift */,
 				B4B68C2227FD6C4700F49D35 /* SettingsView.swift */,
 				B4B68C2427FD6C6E00F49D35 /* ProfileHeader+TextView.swift */,
+				B487880A27FEE00400D9F79D /* ProfileView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -316,7 +316,6 @@
 				B4F9C30727F46A6000D0C23D /* FishingSouthAfricaApp.swift */,
 				B499A43927F9E4B100CD14B4 /* Constants.swift */,
 				B4DF87F027FA2D3C001E5555 /* LoadingState.swift */,
-				B4CC93EC27FB14FA00FD809C /* RemoteImageModel.swift */,
 				B4CC93E527FAD60300FD809C /* Formatters */,
 				B499A42A27F9D84000CD14B4 /* Managers */,
 				B499A41427F9C92400CD14B4 /* Model */,
@@ -363,6 +362,7 @@
 				B4CC93EF27FB1D5800FD809C /* FirebaseStorage */,
 				B4CC93F127FB1D5800FD809C /* FirebaseStorageCombine-Community */,
 				B4CC93F327FB1D5800FD809C /* FirebaseStorageSwift-Beta */,
+				B487880627FECE3C00D9F79D /* SDWebImageSwiftUI */,
 			);
 			productName = FishingSouthAfrica;
 			productReference = B4F9C30427F46A6000D0C23D /* Fishing South Africa.app */;
@@ -396,6 +396,7 @@
 				B4F9C31527F46B0600D0C23D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				B499A43B27F9E9AF00CD14B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				B4CC93EE27FB1D5800FD809C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B487880527FECE3C00D9F79D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = B4F9C30527F46A6000D0C23D /* Products */;
 			projectDirPath = "";
@@ -441,7 +442,6 @@
 				B499A42327F9D75900CD14B4 /* ImagePickerView.swift in Sources */,
 				B410629E27FC6A7300AA2767 /* CustomTextField.swift in Sources */,
 				B499A43427F9DA5D00CD14B4 /* TripDetailView.swift in Sources */,
-				B4D3819827F49C5700A6075D /* ProfileView.swift in Sources */,
 				B499A43827F9DAF000CD14B4 /* FishService.swift in Sources */,
 				B4B68C2B27FD6E5700F49D35 /* SettingsViewModel.swift in Sources */,
 				B4CC93DE27FACCF000FD809C /* FishListItem.swift in Sources */,
@@ -456,7 +456,6 @@
 				B4CC93E927FB125500FD809C /* NumberFormatters.swift in Sources */,
 				B4DF87EF27FA21FE001E5555 /* HomeViewModel.swift in Sources */,
 				B4F9C32227F46CFA00D0C23D /* HomeView.swift in Sources */,
-				B4CC93ED27FB14FA00FD809C /* RemoteImageModel.swift in Sources */,
 				B4AD59B827FDA5010090DC30 /* EditTripViewModel.swift in Sources */,
 				B4F9C32027F46C5C00D0C23D /* Authentication.swift in Sources */,
 				B499A41827F9CABC00CD14B4 /* AddFishView.swift in Sources */,
@@ -466,6 +465,7 @@
 				B40FC89B27FC3541009A4700 /* UserService.swift in Sources */,
 				B4B68C2927FD6CD700F49D35 /* DefaultSettings.swift in Sources */,
 				B40FC8A127FC3E48009A4700 /* AddTripViewModel.swift in Sources */,
+				B487880B27FEE00400D9F79D /* ProfileView.swift in Sources */,
 				B42FC97127F58569000D9693 /* LoginView.swift in Sources */,
 				B4CC93E027FACD6400FD809C /* FishDetailView.swift in Sources */,
 				B4CC93EB27FB13B400FD809C /* ProfileViewModel.swift in Sources */,
@@ -679,6 +679,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B487880527FECE3C00D9F79D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		B499A43B27F9E9AF00CD14B4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -706,6 +714,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B487880627FECE3C00D9F79D /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B487880527FECE3C00D9F79D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
 		B499A43C27F9E9AF00CD14B4 /* FirebaseFirestoreSwift-Beta */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B4F9C31527F46B0600D0C23D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

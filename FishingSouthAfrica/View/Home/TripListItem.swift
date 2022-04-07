@@ -17,6 +17,7 @@ struct TripListItem: View {
             Text(trip.dateStart ?? Date(), formatter: DateFormatters.longNoneDateFormatter)
             Divider()
             Text("Fish Caught: \(trip.fish?.count ?? -1)")
+     
         }
     }
 }

@@ -45,7 +45,7 @@ struct LoginView: View {
                 .padding(.top)
                 
                 VStack {
-                    CustomTextField(placeholder: "Email", text: $authentication.email).keyboardType(.emailAddress)
+                    CustomTextField(placeholder: "Email", text: $authentication.email).keyboardType(.emailAddress).autocapitalization(.none)
                     CustomTextField(placeholder: "Password", text: $authentication.password, isSecure: true)
                 }
                 

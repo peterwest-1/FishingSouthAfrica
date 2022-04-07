@@ -14,6 +14,7 @@ import SwiftUI
 
 enum FishError: Error {
     case Edit
+    case Image
 }
 
 struct FishService {
@@ -112,13 +113,13 @@ struct FishService {
             print("Error Editing 2")
             completion(.failure(FishError.Edit))
         }
-
     }
 
     /// Delete fish from database
     ///     1. Delete fish from colection
     ///     2. Remove from Trip
     ///     3. Remove from User
+    ///        4. Remove image of fish
     /// - Parameters:
     ///   - fish: Fish
     ///   - trip: Trip
@@ -129,6 +130,7 @@ struct FishService {
         deleteFishFromCollection(fish: fish) {
             TripService.shared.deleteFishFromTrip(fish: fish, trip: trip) {
                 UserService.shared.deleteFishFromUser(fish: fish) {
+                    // TODO: - Remove image of fish from storage
                     completion()
                 }
             }
@@ -194,26 +196,25 @@ struct FishService {
         }
     }
 
-    func uploadFishImage(image: UIImage, completion: @escaping
+    func uploadFishImage(image: UIImage, fish: Fish, completion: @escaping
         (String?) -> Void)
     {
         let storageManager = StorageManager()
-        storageManager.upload(image: image, path: "fish") { path in
-            completion(path)
-        }
+        storageManager.persistFishImageToStorage(image: image, fish: fish)
     }
 
-    func getImage(fish: Fish, completion: @escaping (UIImage?) -> Void) {
-        // Create a reference to the file you want to download
-        let url = "gs://fishingsouthafrica-pw.appspot.com/" + (fish.image ?? "")
-        print(url)
-        let reference = Storage.storage().reference(forURL: url)
-        reference.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-                print("Error: Image could not download!")
-            } else {
-                completion(UIImage(data: data!))
+    func storeFishImageInformation(image: URL, fish: Fish, completion: @escaping
+        (Result<URL, Error>) -> Void = { _ in })
+    {
+        let fishData = ["image": image.absoluteString, "updatedAt": Date()] as [String: Any]
+        db.collection(Collections.FISH_COLLECTION).document(fish.UUID).updateData(fishData) { err in
+            if let err = err {
+                print(err)
+                completion(.failure(err))
+                return
             }
+
+            completion(.success(image))
         }
     }
 }
